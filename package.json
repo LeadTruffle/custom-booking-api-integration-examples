@@ -17,7 +17,7 @@
     "public-files.json"
   ],
   "engines": {
-    "node": ">=24"
+    "node": "^24.22.1"
   },
   "scripts": {
     "fixture": "node --import tsx src/runFixture.ts",

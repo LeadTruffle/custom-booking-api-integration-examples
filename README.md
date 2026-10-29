@@ -8,7 +8,8 @@ not enabled by this kit.
 
 ## Get started
 
-Requires Node.js 24 and npm. Clone this repository and install its own dependencies:
+Requires Node.js v24.22.1 or a newer Node.js 24 release, and npm. Clone this
+repository and install its own dependencies:
 
 ```sh
 git clone https://github.com/LeadTruffle/custom-booking-api-integration-examples.git
