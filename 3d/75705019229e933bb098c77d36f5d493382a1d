@@ -1,0 +1,25 @@
+.nvmrc
+  s_cd19bfdd2b2ee9::t_9b03ba4c74047d 1
+README.md
+  s_cd19bfdd2b2ee9::t_0d227b16793c48 11-12
+package-lock.json
+  s_cd19bfdd2b2ee9::t_bb8246c5708d51 24
+package.json
+  s_cd19bfdd2b2ee9::t_3715e0a8bd814b 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3d75705019229e933bb098c77d36f5d493382a1d",
+  "prompts": {},
+  "sessions": {
+    "s_cd19bfdd2b2ee9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18896-5342-7aa2-91ee-7f3178aea625",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "aaron decker <aaron@ard.ninja>"
+    }
+  }
+}
