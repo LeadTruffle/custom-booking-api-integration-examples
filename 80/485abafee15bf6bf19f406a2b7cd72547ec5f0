@@ -1,0 +1,67 @@
+.github/workflows/ci.yml
+  s_cd19bfdd2b2ee9::t_d81aedb4497a4c 1-24
+.nvmrc
+  s_cd19bfdd2b2ee9::t_706f67480e12a5 1
+CONTRACT.md
+  s_cd19bfdd2b2ee9::t_35b22201f9d1dd 1-101
+IMPLEMENTATION_PROMPT.md
+  s_cd19bfdd2b2ee9::t_708271dd19a4d5 1-49
+README.md
+  s_cd19bfdd2b2ee9::t_e0d1b99346e50e 1-130
+biome.json
+  s_cd19bfdd2b2ee9::t_6d25806117122d 1-6
+examples.json
+  s_cd19bfdd2b2ee9::t_d3c2cc9a884739 1-159
+openapi.json
+  s_cd19bfdd2b2ee9::t_2102e6be6f71da 1-2377
+package-lock.json
+  s_cd19bfdd2b2ee9::t_bfb3159e276a91 1-3111
+package.json
+  s_cd19bfdd2b2ee9::t_48bdc16ab7ef85 1-52
+public-files.json
+  s_cd19bfdd2b2ee9::t_18e52741e9d505 1-31
+src/adapter.ts
+  s_cd19bfdd2b2ee9::t_7160e79334df6f 1-166
+src/client.ts
+  s_cd19bfdd2b2ee9::t_29ae902ee4351c 1-82
+src/contract.generated.ts
+  s_cd19bfdd2b2ee9::t_443d59fdd43769 1-366
+src/contract.test.ts
+  s_cd19bfdd2b2ee9::t_44a2c3cc2755bf 1-377
+src/examples.ts
+  s_cd19bfdd2b2ee9::t_abb3202f2b6169 1-121
+src/fixture.ts
+  s_cd19bfdd2b2ee9::t_1b9ff49ce035c1 1-420
+src/generate.ts
+  s_cd19bfdd2b2ee9::t_34ccb2d508873d 1-33
+src/openapi.ts
+  s_cd19bfdd2b2ee9::t_bc0ee8efc8796f 1-110
+src/runFixture.ts
+  s_cd19bfdd2b2ee9::t_a8cee88d6ed235 1-38
+src/scenarios.ts
+  s_cd19bfdd2b2ee9::t_14424e6999691a 1-267
+src/validate.ts
+  s_cd19bfdd2b2ee9::t_21627558c05327 1-26
+src/wireContractSource.ts
+  s_cd19bfdd2b2ee9::t_e9da98b6e14da7 1-29
+tsconfig.json
+  s_cd19bfdd2b2ee9::t_2da9f0a31383ff 1-15
+vitest.config.ts
+  s_cd19bfdd2b2ee9::t_2812daa1b3a74e 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "80485abafee15bf6bf19f406a2b7cd72547ec5f0",
+  "prompts": {},
+  "sessions": {
+    "s_cd19bfdd2b2ee9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18896-5342-7aa2-91ee-7f3178aea625",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "aaron decker <aaron@ard.ninja>"
+    }
+  }
+}
