@@ -1,0 +1,159 @@
+{
+  "describe": {
+    "response": {
+      "contractRevision": "1.0",
+      "accountId": "synthetic-fixture",
+      "businessName": "Synthetic booking fixture",
+      "timezone": "America/New_York",
+      "definitionRevision": "fixture-1",
+      "services": [
+        {
+          "id": "inspection",
+          "name": "Home inspection",
+          "fields": [
+            {
+              "key": "propertyType",
+              "label": "Property type",
+              "requiredAt": "availability",
+              "affectsScheduling": true,
+              "type": "choice",
+              "choices": [
+                {
+                  "id": "house",
+                  "label": "House"
+                },
+                {
+                  "id": "condo",
+                  "label": "Condo"
+                }
+              ]
+            },
+            {
+              "key": "accessNotes",
+              "label": "Access instructions",
+              "requiredAt": "booking",
+              "affectsScheduling": false,
+              "type": "string",
+              "maxLength": 200
+            }
+          ]
+        }
+      ],
+      "notificationOwnership": {
+        "customerConfirmation": "none",
+        "teamNotification": "none"
+      }
+    }
+  },
+  "serviceability": {
+    "request": {
+      "serviceId": "inspection",
+      "address": {
+        "line1": "100 Example Street",
+        "city": "Example City",
+        "region": "NY",
+        "postalCode": "10001",
+        "country": "US"
+      },
+      "answers": {
+        "propertyType": "house"
+      }
+    },
+    "response": {
+      "covered": true,
+      "normalizedAddress": {
+        "line1": "100 Example Street",
+        "city": "Example City",
+        "region": "NY",
+        "postalCode": "10001",
+        "country": "US"
+      },
+      "routingReference": "opaque-fixture-route"
+    }
+  },
+  "availability": {
+    "request": {
+      "serviceId": "inspection",
+      "address": {
+        "line1": "100 Example Street",
+        "city": "Example City",
+        "region": "NY",
+        "postalCode": "10001",
+        "country": "US"
+      },
+      "answers": {
+        "propertyType": "house"
+      },
+      "routingReference": "opaque-fixture-route",
+      "dateRange": {
+        "from": "2026-11-01T00:00:00-04:00",
+        "to": "2026-11-03T00:00:00-05:00"
+      }
+    },
+    "response": {
+      "slots": [
+        {
+          "slotReference": "opaque-fixture-slot",
+          "arrivalWindow": {
+            "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+            "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+            "timezone": "America/New_York"
+          },
+          "expiresAt": "2026-10-31T20:00:00Z"
+        }
+      ]
+    }
+  },
+  "bookings": {
+    "request": {
+      "serviceId": "inspection",
+      "address": {
+        "line1": "100 Example Street",
+        "city": "Example City",
+        "region": "NY",
+        "postalCode": "10001",
+        "country": "US"
+      },
+      "answers": {
+        "propertyType": "house",
+        "accessNotes": "Use the front door."
+      },
+      "contractRevision": "1.0",
+      "idempotencyKey": "synthetic-operation-1",
+      "routingReference": "opaque-fixture-route",
+      "slot": {
+        "slotReference": "opaque-fixture-slot",
+        "arrivalWindow": {
+          "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+          "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+          "timezone": "America/New_York"
+        },
+        "expiresAt": "2026-10-31T20:00:00Z"
+      },
+      "selectionRevision": 1,
+      "contact": {
+        "name": "Fixture Customer",
+        "email": "fixture@example.com"
+      }
+    },
+    "response": {
+      "status": "confirmed",
+      "bookingId": "synthetic-booking-1",
+      "serviceId": "inspection",
+      "arrivalWindow": {
+        "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+        "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+        "timezone": "America/New_York"
+      }
+    }
+  },
+  "bookingStatus": {
+    "request": {
+      "idempotencyKey": "synthetic-operation-1"
+    },
+    "response": {
+      "status": "pending",
+      "operationReference": "synthetic-operation-1"
+    }
+  }
+}

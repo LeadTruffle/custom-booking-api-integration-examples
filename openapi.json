@@ -1,0 +1,2377 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LeadTruffle Custom Booking Adapter",
+    "version": "1.0",
+    "description": "Customer-owned adapter contract. Paths are appended beneath your base URL. Custom semantic constraints marked x-leadtruffle-runtime-validation are enforced by the generated Zod contract and documented in CONTRACT.md."
+  },
+  "servers": [
+    {
+      "url": "https://booking.example.com/leadtruffle"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/v1/describe": {
+      "get": {
+        "operationId": "describe",
+        "responses": {
+          "200": {
+            "description": "Validated result; only status=confirmed is a booked appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "contractRevision": {
+                      "type": "string",
+                      "const": "1.0"
+                    },
+                    "accountId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "businessName": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "timezone": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "definitionRevision": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "services": {
+                      "minItems": 1,
+                      "maxItems": 100,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 2000
+                          },
+                          "fields": {
+                            "maxItems": 50,
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "key": {
+                                      "type": "string",
+                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 200
+                                    },
+                                    "requiredAt": {
+                                      "type": "string",
+                                      "enum": [
+                                        "availability",
+                                        "booking",
+                                        "optional"
+                                      ]
+                                    },
+                                    "affectsScheduling": {
+                                      "type": "boolean"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "const": "string"
+                                    },
+                                    "maxLength": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 2000
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "label",
+                                    "requiredAt",
+                                    "affectsScheduling",
+                                    "type",
+                                    "maxLength"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "key": {
+                                      "type": "string",
+                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 200
+                                    },
+                                    "requiredAt": {
+                                      "type": "string",
+                                      "enum": [
+                                        "availability",
+                                        "booking",
+                                        "optional"
+                                      ]
+                                    },
+                                    "affectsScheduling": {
+                                      "type": "boolean"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "const": "number"
+                                    },
+                                    "minimum": {
+                                      "type": "number"
+                                    },
+                                    "maximum": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "label",
+                                    "requiredAt",
+                                    "affectsScheduling",
+                                    "type",
+                                    "minimum",
+                                    "maximum"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "key": {
+                                      "type": "string",
+                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 200
+                                    },
+                                    "requiredAt": {
+                                      "type": "string",
+                                      "enum": [
+                                        "availability",
+                                        "booking",
+                                        "optional"
+                                      ]
+                                    },
+                                    "affectsScheduling": {
+                                      "type": "boolean"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "const": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "label",
+                                    "requiredAt",
+                                    "affectsScheduling",
+                                    "type"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "key": {
+                                      "type": "string",
+                                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                                    },
+                                    "label": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 200
+                                    },
+                                    "requiredAt": {
+                                      "type": "string",
+                                      "enum": [
+                                        "availability",
+                                        "booking",
+                                        "optional"
+                                      ]
+                                    },
+                                    "affectsScheduling": {
+                                      "type": "boolean"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "const": "choice"
+                                    },
+                                    "choices": {
+                                      "minItems": 1,
+                                      "maxItems": 100,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200
+                                          },
+                                          "label": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200
+                                          }
+                                        },
+                                        "required": [
+                                          "id",
+                                          "label"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "label",
+                                    "requiredAt",
+                                    "affectsScheduling",
+                                    "type",
+                                    "choices"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "fields"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "notificationOwnership": {
+                      "type": "object",
+                      "properties": {
+                        "customerConfirmation": {
+                          "type": "string",
+                          "enum": [
+                            "customer_system",
+                            "leadtruffle",
+                            "none"
+                          ]
+                        },
+                        "teamNotification": {
+                          "type": "string",
+                          "enum": [
+                            "customer_system",
+                            "leadtruffle",
+                            "none"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "customerConfirmation",
+                        "teamNotification"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "contractRevision",
+                    "accountId",
+                    "businessName",
+                    "timezone",
+                    "definitionRevision",
+                    "services",
+                    "notificationOwnership"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "contractRevision": "1.0",
+                  "accountId": "synthetic-fixture",
+                  "businessName": "Synthetic booking fixture",
+                  "timezone": "America/New_York",
+                  "definitionRevision": "fixture-1",
+                  "services": [
+                    {
+                      "id": "inspection",
+                      "name": "Home inspection",
+                      "fields": [
+                        {
+                          "key": "propertyType",
+                          "label": "Property type",
+                          "requiredAt": "availability",
+                          "affectsScheduling": true,
+                          "type": "choice",
+                          "choices": [
+                            {
+                              "id": "house",
+                              "label": "House"
+                            },
+                            {
+                              "id": "condo",
+                              "label": "Condo"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "accessNotes",
+                          "label": "Access instructions",
+                          "requiredAt": "booking",
+                          "affectsScheduling": false,
+                          "type": "string",
+                          "maxLength": 200
+                        }
+                      ]
+                    }
+                  ],
+                  "notificationOwnership": {
+                    "customerConfirmation": "none",
+                    "teamNotification": "none"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Bearer authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route or operation. Missing operation is not proof that no booking was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds the body limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown outcome; reconcile booking status before further writes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/serviceability": {
+      "post": {
+        "operationId": "serviceability",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 300
+                      },
+                      "line2": {
+                        "type": "string",
+                        "maxLength": 300
+                      },
+                      "city": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "region": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 30
+                      },
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "CA"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "line1",
+                      "city",
+                      "region",
+                      "postalCode",
+                      "country"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "answers": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                    },
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 2000
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "serviceId",
+                  "address",
+                  "answers"
+                ],
+                "additionalProperties": false,
+                "x-leadtruffle-runtime-validation": true
+              },
+              "example": {
+                "serviceId": "inspection",
+                "address": {
+                  "line1": "100 Example Street",
+                  "city": "Example City",
+                  "region": "NY",
+                  "postalCode": "10001",
+                  "country": "US"
+                },
+                "answers": {
+                  "propertyType": "house"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated result; only status=confirmed is a booked appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "covered": {
+                          "type": "boolean",
+                          "const": true
+                        },
+                        "normalizedAddress": {
+                          "type": "object",
+                          "properties": {
+                            "line1": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 300
+                            },
+                            "line2": {
+                              "type": "string",
+                              "maxLength": 300
+                            },
+                            "city": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "region": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "postalCode": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 30
+                            },
+                            "country": {
+                              "type": "string",
+                              "enum": [
+                                "US",
+                                "CA"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "line1",
+                            "city",
+                            "region",
+                            "postalCode",
+                            "country"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "routingReference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "covered",
+                        "normalizedAddress"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "covered": {
+                          "type": "boolean",
+                          "const": false
+                        },
+                        "reason": {
+                          "type": "string",
+                          "maxLength": 500
+                        }
+                      },
+                      "required": [
+                        "covered",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "covered": true,
+                  "normalizedAddress": {
+                    "line1": "100 Example Street",
+                    "city": "Example City",
+                    "region": "NY",
+                    "postalCode": "10001",
+                    "country": "US"
+                  },
+                  "routingReference": "opaque-fixture-route"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Bearer authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route or operation. Missing operation is not proof that no booking was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds the body limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown outcome; reconcile booking status before further writes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/availability": {
+      "post": {
+        "operationId": "availability",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 300
+                      },
+                      "line2": {
+                        "type": "string",
+                        "maxLength": 300
+                      },
+                      "city": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "region": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 30
+                      },
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "CA"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "line1",
+                      "city",
+                      "region",
+                      "postalCode",
+                      "country"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "answers": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                    },
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 2000
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        }
+                      ]
+                    }
+                  },
+                  "routingReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "dateRange": {
+                    "type": "object",
+                    "properties": {
+                      "from": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      "to": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "from",
+                      "to"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "serviceId",
+                  "address",
+                  "answers",
+                  "dateRange"
+                ],
+                "additionalProperties": false,
+                "x-leadtruffle-runtime-validation": true
+              },
+              "example": {
+                "serviceId": "inspection",
+                "address": {
+                  "line1": "100 Example Street",
+                  "city": "Example City",
+                  "region": "NY",
+                  "postalCode": "10001",
+                  "country": "US"
+                },
+                "answers": {
+                  "propertyType": "house"
+                },
+                "routingReference": "opaque-fixture-route",
+                "dateRange": {
+                  "from": "2026-11-01T00:00:00-04:00",
+                  "to": "2026-11-03T00:00:00-05:00"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated result; only status=confirmed is a booked appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "slots": {
+                      "maxItems": 100,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slotReference": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "arrivalWindow": {
+                            "type": "object",
+                            "properties": {
+                              "arrivalWindowStart": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              "arrivalWindowEnd": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              }
+                            },
+                            "required": [
+                              "arrivalWindowStart",
+                              "arrivalWindowEnd",
+                              "timezone"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "expiresAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          }
+                        },
+                        "required": [
+                          "slotReference",
+                          "arrivalWindow",
+                          "expiresAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "slots"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "slots": [
+                    {
+                      "slotReference": "opaque-fixture-slot",
+                      "arrivalWindow": {
+                        "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+                        "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+                        "timezone": "America/New_York"
+                      },
+                      "expiresAt": "2026-10-31T20:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Bearer authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route or operation. Missing operation is not proof that no booking was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds the body limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown outcome; reconcile booking status before further writes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bookings": {
+      "post": {
+        "operationId": "bookings",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 300
+                      },
+                      "line2": {
+                        "type": "string",
+                        "maxLength": 300
+                      },
+                      "city": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "region": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 30
+                      },
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "CA"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "line1",
+                      "city",
+                      "region",
+                      "postalCode",
+                      "country"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "answers": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+                    },
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 2000
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        }
+                      ]
+                    }
+                  },
+                  "contractRevision": {
+                    "type": "string",
+                    "const": "1.0"
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "routingReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "slot": {
+                    "type": "object",
+                    "properties": {
+                      "slotReference": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "arrivalWindow": {
+                        "type": "object",
+                        "properties": {
+                          "arrivalWindowStart": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "arrivalWindowEnd": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "timezone": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          }
+                        },
+                        "required": [
+                          "arrivalWindowStart",
+                          "arrivalWindowEnd",
+                          "timezone"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "expiresAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "slotReference",
+                      "arrivalWindow",
+                      "expiresAt"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "selectionRevision": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "contact": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "email": {
+                        "type": "string",
+                        "maxLength": 254,
+                        "format": "email",
+                        "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "pattern": "^\\+[1-9]\\d{6,14}$"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "serviceId",
+                  "address",
+                  "answers",
+                  "contractRevision",
+                  "idempotencyKey",
+                  "slot",
+                  "selectionRevision",
+                  "contact"
+                ],
+                "additionalProperties": false,
+                "x-leadtruffle-runtime-validation": true
+              },
+              "example": {
+                "serviceId": "inspection",
+                "address": {
+                  "line1": "100 Example Street",
+                  "city": "Example City",
+                  "region": "NY",
+                  "postalCode": "10001",
+                  "country": "US"
+                },
+                "answers": {
+                  "propertyType": "house",
+                  "accessNotes": "Use the front door."
+                },
+                "contractRevision": "1.0",
+                "idempotencyKey": "synthetic-operation-1",
+                "routingReference": "opaque-fixture-route",
+                "slot": {
+                  "slotReference": "opaque-fixture-slot",
+                  "arrivalWindow": {
+                    "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+                    "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+                    "timezone": "America/New_York"
+                  },
+                  "expiresAt": "2026-10-31T20:00:00Z"
+                },
+                "selectionRevision": 1,
+                "contact": {
+                  "name": "Fixture Customer",
+                  "email": "fixture@example.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated result; only status=confirmed is a booked appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "confirmed"
+                        },
+                        "bookingId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "serviceId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "arrivalWindow": {
+                          "type": "object",
+                          "properties": {
+                            "arrivalWindowStart": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "arrivalWindowEnd": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            }
+                          },
+                          "required": [
+                            "arrivalWindowStart",
+                            "arrivalWindowEnd",
+                            "timezone"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "bookingId",
+                        "serviceId",
+                        "arrivalWindow"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        },
+                        "operationReference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "rejected"
+                        },
+                        "code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "message": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 500
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "code",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "not_created"
+                        },
+                        "definitive": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "definitive"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "status": "confirmed",
+                  "bookingId": "synthetic-booking-1",
+                  "serviceId": "inspection",
+                  "arrivalWindow": {
+                    "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+                    "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+                    "timezone": "America/New_York"
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Pending operation; query the same idempotency key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "confirmed"
+                        },
+                        "bookingId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "serviceId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "arrivalWindow": {
+                          "type": "object",
+                          "properties": {
+                            "arrivalWindowStart": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "arrivalWindowEnd": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            }
+                          },
+                          "required": [
+                            "arrivalWindowStart",
+                            "arrivalWindowEnd",
+                            "timezone"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "bookingId",
+                        "serviceId",
+                        "arrivalWindow"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        },
+                        "operationReference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "rejected"
+                        },
+                        "code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "message": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 500
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "code",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "not_created"
+                        },
+                        "definitive": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "definitive"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "status": "confirmed",
+                  "bookingId": "synthetic-booking-1",
+                  "serviceId": "inspection",
+                  "arrivalWindow": {
+                    "arrivalWindowStart": "2026-11-01T01:30:00-04:00",
+                    "arrivalWindowEnd": "2026-11-01T01:30:00-05:00",
+                    "timezone": "America/New_York"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Bearer authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route or operation. Missing operation is not proof that no booking was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency key reused with a different payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds the body limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown outcome; reconcile booking status before further writes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/booking-status": {
+      "post": {
+        "operationId": "bookingStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "idempotencyKey": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      }
+                    },
+                    "required": [
+                      "idempotencyKey"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "bookingId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      }
+                    },
+                    "required": [
+                      "bookingId"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "x-leadtruffle-runtime-validation": true
+              },
+              "example": {
+                "idempotencyKey": "synthetic-operation-1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated result; only status=confirmed is a booked appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "confirmed"
+                        },
+                        "bookingId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "serviceId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "arrivalWindow": {
+                          "type": "object",
+                          "properties": {
+                            "arrivalWindowStart": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "arrivalWindowEnd": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            }
+                          },
+                          "required": [
+                            "arrivalWindowStart",
+                            "arrivalWindowEnd",
+                            "timezone"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "bookingId",
+                        "serviceId",
+                        "arrivalWindow"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        },
+                        "operationReference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "rejected"
+                        },
+                        "code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "message": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 500
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "code",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "not_created"
+                        },
+                        "definitive": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "definitive"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "status": "pending",
+                  "operationReference": "synthetic-operation-1"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Pending operation; query the same idempotency key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "confirmed"
+                        },
+                        "bookingId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "serviceId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "arrivalWindow": {
+                          "type": "object",
+                          "properties": {
+                            "arrivalWindowStart": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "arrivalWindowEnd": {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            }
+                          },
+                          "required": [
+                            "arrivalWindowStart",
+                            "arrivalWindowEnd",
+                            "timezone"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "bookingId",
+                        "serviceId",
+                        "arrivalWindow"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        },
+                        "operationReference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "rejected"
+                        },
+                        "code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "message": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 500
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "code",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "not_created"
+                        },
+                        "definitive": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "definitive"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "x-leadtruffle-runtime-validation": true
+                },
+                "example": {
+                  "status": "pending",
+                  "operationReference": "synthetic-operation-1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Bearer authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route or operation. Missing operation is not proof that no booking was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds the body limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown outcome; reconcile booking status before further writes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "x-leadtruffle-runtime-validation": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

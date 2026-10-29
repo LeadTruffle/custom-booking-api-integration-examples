@@ -1,0 +1,31 @@
+{
+  "files": [
+    "README.md",
+    "LICENSE",
+    ".nvmrc",
+    ".gitignore",
+    "CONTRACT.md",
+    "IMPLEMENTATION_PROMPT.md",
+    "package.json",
+    "package-lock.json",
+    "public-files.json",
+    "openapi.json",
+    "examples.json",
+    "tsconfig.json",
+    "vitest.config.ts",
+    "biome.json",
+    ".github/workflows/ci.yml",
+    "src/adapter.ts",
+    "src/client.ts",
+    "src/contract.generated.ts",
+    "src/contract.test.ts",
+    "src/examples.ts",
+    "src/fixture.ts",
+    "src/generate.ts",
+    "src/openapi.ts",
+    "src/runFixture.ts",
+    "src/scenarios.ts",
+    "src/validate.ts",
+    "src/wireContractSource.ts"
+  ]
+}
